@@ -11,15 +11,15 @@ coursework is due **4pm on Thu 23rd April**
 - Part 2 of the coursework is due **4pm on Thu 7th May**
 
 ## TODO
--[ ] Parsing RFD Files
- -[ ] RFD Lexer **(Mykyta)**
- -[ ] RFD Tokeniser **(Michael)**
--[ ] RDFLite Query Language
- -[ ] RDFLite Schema **(Alan)**
- -[ ] RDFLite Lexer
- -[ ] RDFLite Tokensier
- -[ ] Query evaluation
--[ ] AST to RFD File
+- [ ] Parsing RFD Files
+    - [ ] RFD Lexer **[Mykyta]**
+    - [ ] RFD Tokeniser **[Michael]**
+- [ ] RDFLite Query Language
+    - [ ] RDFLite Schema **[Alan]**
+    - [ ] RDFLite Lexer
+    - [ ] RDFLite Tokensier
+    - [ ] Query evaluation
+- [ ] AST to RFD File
 
 *Some tasks have already been assigned, although feel free to do more if you
 want.*
