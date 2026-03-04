@@ -12,7 +12,7 @@ coursework is due **4pm on Thu 23rd April**
 
 ## TODO
 - [ ] Parsing RDF Files
-    - [ ] RDF Lexer (alex file) **[Mykyta]**
+    - [x] RDF Lexer (alex file) **[Mykyta]**
     - [ ] RDF Parser (happy file) **[Michael]**
 - [ ] RDFLite Query Language
     - [ ] RDFLite Schema **[Alan]**
