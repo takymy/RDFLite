@@ -19,20 +19,13 @@ import TurtleLexer
     int     { TokenInteger $$ }
     var     { TokenVar $$ }
 
-%left '.'
-%left ';'
-%left ','
-%left ':'
-%left base
-%left prefix
-%left uri
-%left str
-%left int
-%left var
 %%
+
+TurtleDocs  : TurtleDoc                 { $1 }
+            | TurtleDocs TurtleDoc      { CTurtleDocP $1 $2 }
+
 TurtleDoc   : Directive '.'             { CDirective $1 }
             | AbbrURI Predicates '.'    { CTripples $1 $2 }
-            | TurtleDoc TurtleDoc       { CTurtleDocP $1 $2 }
 
 Directive   : base uri                  { CBase $2 }
             | prefix var ':' uri        { CPrefix $2 $4 }
@@ -40,13 +33,17 @@ Directive   : base uri                  { CBase $2 }
 AbbrURI     : uri                       { CURI $1 }
             | var ':' var               { CAUIR $1 $3 }
 
-Predicates  : AbbrURI Object            { CPredicate $1 $2 }
-            | Predicates ';' Predicates { CPredicateP $1 $3 }
+Predicate   : AbbrURI ObjectList        { CPredicate $1 $2 }
 
-Object      : Object ',' Object         { CObjectP $1 $3 }
-            | AbbrURI                   { COURI $1 }
+Predicates  : Predicate                 { $1 }
+            | Predicates ';' Predicate  { CPredicateP $1 $3 }
+
+ObjectItem  : AbbrURI                   { COURI $1 }
             | str                       { COStr $1}
             | int                       { COInt $1}
+
+ObjectList  : ObjectItem                { $1 }
+            | ObjectList ',' ObjectItem { CObjects $1 $3 } 
 
 {
 parseError = error "parse error"
@@ -70,11 +67,12 @@ data Object
 
 data PredicateT 
   = CPredicate AbbrURI Object 
-  | CPredicateP Predicate Predicate
+  | CPredicateP PredicateT PredicateT
   deriving (Eq, Show)
 
 data TurtleDoc
   = CDirective Directive 
-  | CTripples AbbrURI Predicates
+  | CTripples AbbrURI PredicateT
+  | CTurtleDocP TurtleDoc TurtleDoc
   deriving (Eq, Show)
 }
