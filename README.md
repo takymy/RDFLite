@@ -17,7 +17,7 @@ coursework is due **4pm on Thu 23rd April**
     - [x] RDF Parser Resolve conflicts **[Mykyta]**
 - [ ] RDFLite Query Language
     - [x] RDFLite Schema **[Alan]**
-    - [ ] RDFLite Lexer (alex file)
+    - [X] RDFLite Lexer (alex file) **[Mykyta]**
     - [ ] RDFLite Parser (happy file)
     - [ ] Query evaluation
 - [ ] AST to RFD File
