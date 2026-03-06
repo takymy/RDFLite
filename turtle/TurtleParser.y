@@ -21,49 +21,69 @@ import TurtleLexer
 
 %%
 
-TurtleDoc   : Statement '.'             { [$1] }
-            | TurtleDoc Statement '.'   { $2 : $1 }
+TurtleDocs  :: { TurtleDoc }
+TurtleDocs  :                           { CTurtleDocEmpty }
+            | TurtleDocs TurtleDoc      { CTurtleDocP $1 $2 }
 
-Statement   : base uri                  { Base $2 }
-            | prefix var ':' uri        { Prefix $2 $4 }
-            | Resource PredObjList      { Tripples $1 $2 }
+TurtleDoc   :: { TurtleDoc }
+TurtleDoc   : Directive '.'             { CDirective $1 }
+            | AbbrURI Predicates '.'    { CTripples $1 $2 }
 
-PredObjList : PredObj                   { [$1] }
-            | PredObjList ';' PredObj   { $3 : $1 }
+Directive   :: { Directive }
+Directive   : base uri                  { CBase $2 }
+            | prefix var ':' uri        { CPrefix $2 $4 }
 
-PredObj     : Resource ObjList          { PredObjC $1 $2 }
+AbbrURI     :: { AbbrURI }
+AbbrURI     : uri                       { CURI $1 }
+            | var ':' var               { CAURI $1 $3 }
 
-ObjList     : Value                     { [$1] }
-            | ObjList ',' Value         { $3 : $1 }
+Predicate   :: { PredicateT }
+Predicate   : AbbrURI ObjectList        { CPredicate $1 $2 }
 
-Value  : Resource                       { VRes $1 }
-            | str                       { VStr $1}
-            | int                       { VInt $1}
+Predicates  :: { PredicateT }
+Predicates  : Predicate                 { $1 }
+            | Predicates ';' Predicate  { CPredicateP $1 $3 }
 
-Resource    : uri                       { URI $1 }
-            | var ':' var               { AURI $1 $3 }
+ObjectItem  :: { Object }
+ObjectItem  : AbbrURI                   { COURI $1 }
+            | str                       { COStr $1 }
+            | int                       { COInt $1 }
+
+ObjectList  :: { Object }
+ObjectList  : ObjectItem                { $1 }
+            | ObjectList ',' ObjectItem { CObjects $1 $3 }
 
 {
-parseError = error "parse error"
+parseError :: [Token] -> a
+parseError []    = error "Parse error: unexpected end of input"
+parseError (t:_) = error $ "Parse error: unexpected token " ++ show t
 
-data Statement
-  = Base String 
-  | Prefix String String
-  | Tripples Resource [PredObj]
+data Directive
+  = CBase String
+  | CPrefix String String
   deriving (Eq, Show)
 
-data PredObj 
-  = PredObjC Resource [Value]
+data AbbrURI
+  = CURI String
+  | CAURI String String
   deriving (Eq, Show)
 
-data Value
-  = VRes Resource 
-  | VStr String 
-  | VInt Int
+data Object
+  = CObjects Object Object
+  | COURI AbbrURI
+  | COStr String
+  | COInt Int
   deriving (Eq, Show)
 
-data Resource 
-  = URI String 
-  | AURI String String
+data PredicateT
+  = CPredicate AbbrURI Object
+  | CPredicateP PredicateT PredicateT
+  deriving (Eq, Show)
+
+data TurtleDoc
+  = CDirective Directive
+  | CTripples AbbrURI PredicateT
+  | CTurtleDocP TurtleDoc TurtleDoc
+  | CTurtleDocEmpty
   deriving (Eq, Show)
 }
