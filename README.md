@@ -11,15 +11,15 @@ coursework is due **4pm on Thu 23rd April**
 - Part 2 of the coursework is due **4pm on Thu 7th May**
 
 ## TODO
-- [x] Parsing RDF Files
+- [x] Parsing RDF Files (turtle)
     - [x] RDF Lexer (alex file) **[Mykyta]**
     - [x] RDF Parser (happy file) **[Michael]**
     - [x] RDF Parser Resolve conflicts **[Mykyta]**
-    - [x] RDF Parser Cleaned AST Up **[Michael]**
+    - [x] RDF Parser Cleaned AST Up **[Michael]** 
 - [ ] RDFLite Query Language
     - [x] RDFLite Schema **[Alan]**
     - [X] RDFLite Lexer (alex file) **[Mykyta]**
-    - [ ] RDFLite Parser (happy file)
+    - [x] RDFLite Parser (happy file) **[Mykyta]**
     - [ ] Query evaluation
 - [ ] AST to RFD File
 
